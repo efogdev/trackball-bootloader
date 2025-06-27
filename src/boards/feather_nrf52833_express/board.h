@@ -31,39 +31,39 @@
 /* LED
  *------------------------------------------------------------------*/
 #define LEDS_NUMBER           2
-#define LED_PRIMARY_PIN       _PINNUM(1, 15)
-#define LED_SECONDARY_PIN     _PINNUM(1, 10)
+#define LED_PRIMARY_PIN       _PINNUM(0, 9)
+#define LED_SECONDARY_PIN     _PINNUM(0, 24)
 #define LED_STATE_ON          1
 
-#define LED_NEOPIXEL          _PINNUM(0, 16)
-#define NEOPIXELS_NUMBER      1
-#define BOARD_RGB_BRIGHTNESS  0x040404
+#define LED_NEOPIXEL          _PINNUM(0, 12)
+#define NEOPIXELS_NUMBER      16
+#define BOARD_RGB_BRIGHTNESS  0x101010
 
 /*------------------------------------------------------------------*/
 /* BUTTON
  *------------------------------------------------------------------*/
 #define BUTTONS_NUMBER        2
-#define BUTTON_1              _PINNUM(1, 02)
-#define BUTTON_2              _PINNUM(0, 10)
-#define BUTTON_PULL           NRF_GPIO_PIN_PULLUP
+#define BUTTON_1              _PINNUM(0, 27)
+#define BUTTON_2              _PINNUM(0, 26)
+#define BUTTON_PULL           NRF_GPIO_PIN_NOPULL
 
 //--------------------------------------------------------------------+
 // BLE OTA
 //--------------------------------------------------------------------+
-#define BLEDIS_MANUFACTURER   "Adafruit Industries"
-#define BLEDIS_MODEL          "Feather nRF52833 Express"
+#define BLEDIS_MANUFACTURER   "efog.tech"
+#define BLEDIS_MODEL          "Trackball"
 
 //--------------------------------------------------------------------+
 // USB
 //--------------------------------------------------------------------+
 #define USB_DESC_VID           0x239A
-#define USB_DESC_UF2_PID       0x0029 // TODO change later
-#define USB_DESC_CDC_ONLY_PID  0x002A // TODO change later
+#define USB_DESC_UF2_PID       0x0029
+#define USB_DESC_CDC_ONLY_PID  0x002A
 
 //------------- UF2 -------------//
-#define UF2_PRODUCT_NAME      "Adafruit Feather nRF52833 Express"
-#define UF2_VOLUME_LABEL      "FTHR833BOOT"
-#define UF2_BOARD_ID          "nRF52833-Feather-revD"
-#define UF2_INDEX_URL         "https://www.adafruit.com/product/4062" // TODO change later
+#define UF2_PRODUCT_NAME      "efog.tech trackball"
+#define UF2_VOLUME_LABEL      "TRACKBALL"
+#define UF2_BOARD_ID          "efogtech-nRF52833-trackball-0"
+#define UF2_INDEX_URL         "https://efog.tech/p/trackball" 
 
 #endif
