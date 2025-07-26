@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  */
 
-#ifndef _FEATHER_NRF52833_H
-#define _FEATHER_NRF52833_H
+#ifndef _EFOGTECH_TRACKBALL_H
+#define _EFOGTECH_TRACKBALL_H
 
 #define _PINNUM(port, pin)    ((port)*32 + (pin))
 
@@ -61,9 +61,9 @@
 #define USB_DESC_CDC_ONLY_PID  0x002A
 
 //------------- UF2 -------------//
-#define UF2_PRODUCT_NAME      "efog.tech trackball"
+#define UF2_PRODUCT_NAME      "Endgame Trackball"
 #define UF2_VOLUME_LABEL      "TRACKBALL"
 #define UF2_BOARD_ID          "efogtech-nRF52833-trackball-0"
-#define UF2_INDEX_URL         "https://efog.tech/p/trackball" 
+#define UF2_INDEX_URL         "https://efog.tech/p/endgame-trackball"
 
 #endif
