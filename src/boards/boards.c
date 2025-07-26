@@ -26,7 +26,6 @@
 #include "nrf_pwm.h"
 #include "app_scheduler.h"
 #include "app_timer.h"
-#include "nrf_drv_twi.h"
 
 #ifdef LED_APA102_CLK
 #include "nrf_spim.h"
@@ -34,13 +33,6 @@
 
 #define SCHED_MAX_EVENT_DATA_SIZE           sizeof(app_timer_event_t)        /**< Maximum size of scheduler events. */
 #define SCHED_QUEUE_SIZE                    30                               /**< Maximum number of events in the scheduler queue. */
-
-#define CHARGER_TWI_SCL_PIN                 0x17  // P0.23
-#define CHARGER_TWI_SDA_PIN                 0x19  // P0.25
-#define CHARGER_IRQ_PIN                     0x25  // P1.05
-
-static const nrf_drv_twi_t m_twi = NRF_DRV_TWI_INSTANCE(0);
-static volatile bool m_charger_initialized = false;
 
 #if defined(LED_NEOPIXEL) || defined(LED_RGB_RED_PIN) || defined(LED_APA102_CLK)
 void neopixel_init(void);
@@ -74,34 +66,6 @@ bool button_pressed(uint32_t pin) {
 // This is declared so that a board specific init can be called from here.
 void __attribute__((weak)) board_init2(void) {}
 
-static bool charger_controller_init(void)
-{
-  ret_code_t err_code;
-  
-  nrf_gpio_cfg_input(CHARGER_IRQ_PIN, NRF_GPIO_PIN_NOPULL);
-  
-  const nrf_drv_twi_config_t twi_config = {
-    .scl = CHARGER_TWI_SCL_PIN,
-    .sda = CHARGER_TWI_SDA_PIN,
-    .frequency = NRF_DRV_TWI_FREQ_100K,
-    .interrupt_priority = APP_IRQ_PRIORITY_HIGH,
-    .clear_bus_init = false
-  };
-  
-  err_code = nrf_drv_twi_init(&m_twi, &twi_config, NULL, NULL);
-  if (err_code != NRF_SUCCESS) {
-    return false;
-  }
-  
-  nrf_drv_twi_enable(&m_twi);
-  
-  // TODO: Add specific charger controller register initialization here
-  // This is a placeholder for actual charger controller communication
-  // Example: Write to configuration registers, read status, etc.
-  
-  return true;
-}
-
 void board_init(void) {
   // stop LF clock just in case we jump from application without reset
   NRF_CLOCK->TASKS_LFCLKSTOP = 1UL;
@@ -113,9 +77,6 @@ void board_init(void) {
   button_init(BUTTON_DFU);
   button_init(BUTTON_FRESET);
   NRFX_DELAY_US(100); // wait for the pin state is stable
-  
-  // Initialize charger controller via I2C before LED initialization
-  m_charger_initialized = charger_controller_init();
 
 #if LEDS_NUMBER > 0
   // use PMW0 for LED RED
@@ -178,12 +139,6 @@ void board_init(void) {
 void __attribute__((weak)) board_teardown2(void) {}
 
 void board_teardown(void) {
-  // Disable TWI if it was initialized
-  if (m_charger_initialized) {
-    nrf_drv_twi_disable(&m_twi);
-    nrf_drv_twi_uninit(&m_twi);
-  }
-  
   // Disable systick, turn off LEDs
   SysTick->CTRL = 0;
 
